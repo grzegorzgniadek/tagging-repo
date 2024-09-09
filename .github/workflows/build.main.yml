@@ -1,4 +1,4 @@
-name: 11. Build main/hotfix (auto)
+name: 11. Build master/hotfix (auto)
 
 on:
   push:

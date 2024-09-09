@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  USE_TAGS: ${{ github.ref_name == 'main' ||  startsWith(github.ref_name, 'hotfix/') }}
+  USE_TAGS: ${{ github.ref_name == 'master' ||  startsWith(github.ref_name, 'hotfix/') }}
 
 jobs:
   calculate:
@@ -56,8 +56,8 @@ jobs:
             VERSION=$(bash semver.sh -q -v ${{ steps.describe.outputs.tag }} ${{ startsWith(github.ref_name, 'hotfix/') && '-h' || '' }})
           fi
 
-          # Make sure hotfix tag won't make it into main
-          [[ ${{ github.ref_name }} == "main" && $VERSION =~ "-" ]] && exit 1 || true
+          # Make sure hotfix tag won't make it into master
+          [[ ${{ github.ref_name }} == "master" && $VERSION =~ "-" ]] && exit 1 || true
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Calculated version: $VERSION"
