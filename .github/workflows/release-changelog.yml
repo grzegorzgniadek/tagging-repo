@@ -3,12 +3,6 @@ name: "Changelog create (reusable)"
 on:
   workflow_dispatch:
     inputs:
-      
-      source:
-        type: string
-        required: true
-        description: something
-
       fromTag:
         required: true
         type: string
@@ -22,7 +16,7 @@ on:
       create-release:
         required: false
         type: boolean
-        default: false
+        default: true
         description: create-release
 
 concurrency:
