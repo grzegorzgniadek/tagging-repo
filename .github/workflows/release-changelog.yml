@@ -47,6 +47,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body: ${{ steps.changelog.outputs.changelog }}
-          tag_name: ${{ inputs.tag }}
+          tag_name: ${{ inputs.totag }}
 
       
