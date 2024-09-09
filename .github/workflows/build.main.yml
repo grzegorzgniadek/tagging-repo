@@ -3,7 +3,7 @@ name: 11. Build main/hotfix (auto)
 on:
   push:
     branches:
-      - main
+      - master
       - hotfix/*
 
 jobs:
