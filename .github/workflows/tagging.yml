@@ -71,7 +71,7 @@ jobs:
           exportCache: true
           toTag: ${{ inputs.tag }}
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.token  }}
 
       - name: Create release
         uses: softprops/action-gh-release@v2
