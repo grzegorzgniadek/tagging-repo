@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  USE_TAGS: ${{ github.ref_name == 'main' ||  startsWith(github.ref_name, 'hotfix/') }}
+  USE_LATEST_TAG: ${{ github.ref_name == 'main' }}
 
 jobs:
   calculate:
@@ -45,12 +45,11 @@ jobs:
           elif [[ ${{ github.event_name }} == "pull_request" ]]; then    
             VERSION="pr${{ github.event.number }}"
             
-          elif [[ ${{ env.USE_TAGS }} == "true" ]]; then
+          elif [[ ${{ env.USE_LATEST_TAG }} == "true" ]]; then
             VERSION=$(bash semver.sh -q )
 
           elif [[ ${{ github.ref_name }}  =~ ^hotfix ]]; then    
             OLD_VERSION=$(sed 's:.*/\(v[0-9]*\.[0-9]*\.[0-9]*\).*:\1:g' <<< ${{ github.ref_name }})
-
             VERSION=$(bash semver.sh -q -v $OLD_VERSION -h )
           fi
           # Make sure hotfix tag won't make it into main
