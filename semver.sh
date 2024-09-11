@@ -3,7 +3,7 @@
 # !!! FILE NEEDED FOR GITHUB VERSIONING !!!
 
 VERSION_ONLY=false
-OLD_VERSION="no"
+USE_LATEST_TAG=true
 HOTFIX=false
 VERSION=""
 
@@ -12,6 +12,7 @@ while [[ $# -gt 0 ]]; do
   "-v" | "--version")
     shift
     OLD_VERSION="$1"
+    USE_LATEST_TAG=false
     ;;
   "-q")
     VERSION_ONLY=true
@@ -30,7 +31,8 @@ MAJOR_MATCH="(major|breaking)[:|\/|\(]"
 MINOR_MATCH="feat[:|\/|\(]"
 PATCH_MATCH="fix[:|\/|\(]"
 
-[[ $OLD_VERSION == "no" ]] && OLD_VERSION=$(git tag -l 'v*.*.*'| sort -V | tail -n 1)
+[[ $USE_LATEST_TAG == "true" ]] && OLD_VERSION=$(git tag -l 'v*.*.*'| sort -V | tail -n 1)
+[[ $USE_LATEST_TAG == "false" ]] && OLD_VERSION=$(git tag -l 'v*.*.*'| sort -V | grep $OLD_VERSION | tail -n 1)
 
 OLD_VERSION=$(sed 's:^v::' <<<"$OLD_VERSION")
 if [[ $HOTFIX == "true" ]]; then
