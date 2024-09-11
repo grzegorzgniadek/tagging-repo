@@ -1,0 +1,24 @@
+name: 99. Build and test PR
+run-name: 'Build and test #${{ github.event.number }}'
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+      - main
+      - hotfix/*
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    name: Version
+    uses: ./.github/workflows/version.yml
+    if: ${{ !github.event.pull_request.draft }}
+    
