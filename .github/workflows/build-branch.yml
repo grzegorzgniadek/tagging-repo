@@ -3,23 +3,6 @@ run-name: Build ${{ github.ref_name }}
 
 on:
   workflow_dispatch:
-    inputs:
-      auto-deploy:
-        description: 'Deploy after build?'
-        required: true
-        type: boolean
-        default: false
-
-      speed:
-        description: 'Speed up deployment? (not recommended)'
-        required: false
-        type: boolean
-        default: false
-
-      environment:
-        description: 'Environment to deploy to'
-        type: environment
-        default: dev
 
 concurrency:
   group: build-${{ github.ref }}
