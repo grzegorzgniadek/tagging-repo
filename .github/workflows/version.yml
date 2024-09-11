@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  USE_TAGS: ${{ github.ref_name == 'master' ||  startsWith(github.ref_name, 'hotfix/') }}
+  USE_TAGS: ${{ github.ref_name == 'main' ||  startsWith(github.ref_name, 'hotfix/') }}
 
 jobs:
   calculate:
@@ -32,19 +32,12 @@ jobs:
           sparse-checkout: |
             semver.sh
 
-      - name: GitHub describe
-        if: env.USE_TAGS == 'true'
-        id: describe
-        run: |
-          VER=$(git describe --tags --abbrev=0)
-          echo "tag=$VER" >> "$GITHUB_OUTPUT"
-
       - name: Perform calculations
         id: calc
         run: |
           VERSION=0
           if [[ ${{ github.ref_name }} =~ ^v[0-9]+.[0-9]+.[0-9]+$ ]]; then    
-          VERSION="${{ github.ref_name }}"
+            VERSION="${{ github.ref_name }}"
 
           elif [[ ${{ github.event_name }} == "workflow_dispatch" ]]; then
             VERSION=m${{ github.run_number }}
@@ -53,11 +46,16 @@ jobs:
             VERSION="pr${{ github.event.number }}"
             
           elif [[ ${{ env.USE_TAGS }} == "true" ]]; then
-            VERSION=$(bash semver.sh -q -v ${{ steps.describe.outputs.tag }} ${{ startsWith(github.ref_name, 'hotfix/') && '-h' || '' }})
-          fi
+            VERSION=$(bash semver.sh -q )
 
-          # Make sure hotfix tag won't make it into master
-          [[ ${{ github.ref_name }} == "master" && $VERSION =~ "-" ]] && exit 1 || true
+          elif [[ ${{ github.ref_name }}  =~ ^hotfix ]]; then    
+            OLD_VERSION=$(sed 's:.*/\(v[0-9]*\.[0-9]*\.[0-9]*\).*:\1:g' <<< ${{ github.ref_name }})
+
+            VERSION=$(bash semver.sh -q -v $OLD_VERSION -h )
+          fi
+          # Make sure hotfix tag won't make it into main
+          [[ ${{ github.ref_name }} == "main" && $VERSION =~ "-" ]] && exit 1 || true
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Calculated version: $VERSION"
+
