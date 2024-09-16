@@ -46,6 +46,10 @@ jobs:
           git tag -a ${{ inputs.tag }} -m "Automated build tag"
           git push --tags
           sleep 5s
+      - name: Extract branch name
+        shell: bash
+        run: echo "${{ github.ref_name }}  ${{github.run_number}}" 
+
 
   release:
     name: Create ${{ inputs.tag }} release
