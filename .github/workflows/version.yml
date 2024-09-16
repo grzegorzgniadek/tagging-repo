@@ -22,11 +22,11 @@ jobs:
     steps:
       - name: Extract branch name
         shell: bash
-         run: |
-            echo "${{ github.ref_name }} - ref-name"
-            echo "${{ github.base_ref }}- base-ref"  
-            echo "${{ github.head_ref }} - head-ref"
-            echo "${{github.run_number}} - run number" 
+        run: |
+          echo "${{ github.ref_name }} - ref-name"
+          echo "${{ github.base_ref }}- base-ref"  
+          echo "${{ github.head_ref }} - head-ref"
+          echo "${{github.run_number}} - run number" 
         
   calculate:
     name: Calculate
