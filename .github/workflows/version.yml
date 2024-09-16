@@ -15,6 +15,15 @@ env:
   USE_LATEST_TAG: ${{ github.ref_name == 'master' }}
 
 jobs:
+  echo-branch:
+    name: Echo Branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "${{ github.ref_name }}  ${{github.run_number}}" 
+        
   calculate:
     name: Calculate
     runs-on: ubuntu-latest
